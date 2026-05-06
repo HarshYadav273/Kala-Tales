@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import ProductCard from "../components/ProductCard";
+import PriceDropdown from "../components/PriceDropdown";
 import {
   macrame,
   macrameWallHangings,
@@ -121,25 +122,15 @@ export default function Macrame() {
             ))}
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <label
-              htmlFor="macrame-price-filter"
-              className="text-[10px] tracking-widest uppercase text-[#7a6a60]"
-            >
+          <div className="flex items-center gap-3">
+            <span className="text-[10px] tracking-widest uppercase text-[#7a6a60]">
               Price
-            </label>
-            <select
-              id="macrame-price-filter"
+            </span>
+            <PriceDropdown
+              ranges={priceRanges}
               value={activePrice}
-              onChange={(event) => setActivePrice(event.target.value)}
-              className="w-full sm:w-auto bg-[#fffaf5] border border-[#e8ddd4] rounded-sm px-3 py-2 text-xs text-[#2a1f1a] outline-none focus:border-[#C8441A]"
-            >
-              {priceRanges.map((range) => (
-                <option key={range.value} value={range.value}>
-                  {range.label}
-                </option>
-              ))}
-            </select>
+              onChange={setActivePrice}
+            />
           </div>
         </div>
 
