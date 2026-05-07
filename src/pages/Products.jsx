@@ -1,42 +1,52 @@
 import ProductCard from "../components/ProductCard.jsx";
-import { candles, macrameWallHangings, macrameKeychains, macrameCoasters } from "../data/products.js";
-
-// Each section is its own isolated grid — new category always starts on a fresh row.
-// Add more sections here in the future and the rule holds automatically.
-const sections = [
-  {
-    key: "candles",
-    superLabel: "Candles",
-    title: "Candles",
-    subtitle: "Hand-poured soy wax candles in artisanal metal and glass jars, crafted by women artisans.",
-    products: candles,
-  },
-  {
-    key: "wall-hangings",
-    superLabel: "Macrame",
-    title: "Wall Hangings",
-    subtitle: "Handwoven pieces that bring warmth, texture, and quiet elegance to your space.",
-    products: macrameWallHangings,
-  },
-  {
-    key: "keychains",
-    superLabel: "Macrame",
-    title: "Keychains",
-    subtitle: "Small handcrafted details that add style to your everyday essentials.",
-    products: macrameKeychains,
-  },
-  {
-    key: "coasters",
-    superLabel: "Macrame",
-    title: "Coasters",
-    subtitle: "Protect your surfaces with handcrafted warmth and texture.",
-    products: macrameCoasters,
-  },
-];
-
-const totalProducts = sections.reduce((sum, s) => sum + s.products.length, 0);
+import { useProducts } from "../hooks/useProducts.js";
 
 function Products() {
+  const { candles, macrameWallHangings, macrameKeychains, macrameCoasters, loading } = useProducts();
+
+  // Each section is its own isolated grid — new category always starts on a fresh row.
+  // Sections are built inside the component so they always reflect live data.
+  const sections = [
+    {
+      key: "candles",
+      superLabel: "Candles",
+      title: "Candles",
+      subtitle: "Hand-poured soy wax candles in artisanal metal and glass jars, crafted by women artisans.",
+      products: candles,
+    },
+    {
+      key: "wall-hangings",
+      superLabel: "Macrame",
+      title: "Wall Hangings",
+      subtitle: "Handwoven pieces that bring warmth, texture, and quiet elegance to your space.",
+      products: macrameWallHangings,
+    },
+    {
+      key: "keychains",
+      superLabel: "Macrame",
+      title: "Keychains",
+      subtitle: "Small handcrafted details that add style to your everyday essentials.",
+      products: macrameKeychains,
+    },
+    {
+      key: "coasters",
+      superLabel: "Macrame",
+      title: "Coasters",
+      subtitle: "Protect your surfaces with handcrafted warmth and texture.",
+      products: macrameCoasters,
+    },
+  ];
+
+  const totalProducts = sections.reduce((sum, s) => sum + s.products.length, 0);
+
+  if (loading) {
+    return (
+      <div className="bg-[#fffaf5] min-h-screen flex items-center justify-center">
+        <p className="text-[#aaa] text-sm tracking-widest uppercase">Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-[#fffaf5] min-h-screen">
       {/* Page Header */}
@@ -97,3 +107,4 @@ function Products() {
 }
 
 export default Products;
+

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Hero from "../components/Hero";
 import ProductCard from "../components/ProductCard";
-import { candles, macrame } from "../data/products";
+import { useProducts } from "../hooks/useProducts";
 
 function SectionHeader({ title, linkTo }) {
   return (
@@ -20,6 +20,16 @@ function SectionHeader({ title, linkTo }) {
 }
 
 export default function Home() {
+  const { candles, macrame, loading, error } = useProducts();
+
+  if (loading) {
+    return (
+      <div className="bg-[#fffaf5] min-h-screen flex items-center justify-center">
+        <p className="text-[#aaa] text-sm tracking-widest uppercase">Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-[#fffaf5]">
       <Hero />

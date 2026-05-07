@@ -1,12 +1,13 @@
 import { useState, useRef } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { allProducts } from "../data/products.js";
+import { useProducts } from "../hooks/useProducts.js";
 import { useCart } from "../context/CartContext.jsx";
 
 function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { allProducts, loading } = useProducts();
   const product = allProducts.find((item) => String(item.id) === String(id));
   const isWallHanging = product?.subcategory === "Wall Hangings";
 
@@ -41,6 +42,14 @@ function ProductDetail() {
 
   const shareUrl = encodeURIComponent(window.location.href);
   const shareText = encodeURIComponent(`Check out ${product?.name} on Kala Tales!`);
+
+  if (loading) {
+    return (
+      <div className="bg-[#fffaf5] min-h-screen flex items-center justify-center">
+        <p className="text-[#aaa] text-sm tracking-widest uppercase">Loading...</p>
+      </div>
+    );
+  }
 
   if (!product) {
     return (

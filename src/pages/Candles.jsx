@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import ProductCard from "../components/ProductCard";
 import PriceDropdown from "../components/PriceDropdown";
-import { candles } from "../data/products";
+import { useProducts } from "../hooks/useProducts";
 
 const candleCategories = [
   "All",
@@ -22,6 +22,7 @@ const priceRanges = [
 ];
 
 export default function Candles() {
+  const { candles, loading } = useProducts();
   const [activeCategory, setActiveCategory] = useState("All");
   const [activePrice, setActivePrice] = useState("all");
 
@@ -38,7 +39,15 @@ export default function Candles() {
 
       return matchesCategory && matchesPrice;
     });
-  }, [activeCategory, activePrice]);
+  }, [candles, activeCategory, activePrice]);
+
+  if (loading) {
+    return (
+      <div className="bg-[#fffaf5] min-h-screen flex items-center justify-center">
+        <p className="text-[#aaa] text-sm tracking-widest uppercase">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-[#fffaf5] min-h-screen">
