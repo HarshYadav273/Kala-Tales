@@ -136,7 +136,7 @@ export default function Navbar() {
             </button>
             <nav className="hidden xl:flex items-center gap-4 2xl:gap-6">
               {navLinksLeft.map((link) => (
-                <NavLink key={link.to} to={link.to} className={linkClass}>
+                <NavLink key={link.to} to={link.to} className={linkClass} onClick={() => window.scrollTo(0, 0)}>
                   {link.label}
                 </NavLink>
               ))}
@@ -146,6 +146,7 @@ export default function Navbar() {
           {/* Center — Logo (absolutely centered) */}
           <Link
             to="/"
+            onClick={() => window.scrollTo(0, 0)}
             className="absolute left-1/2 -translate-x-1/2 flex-shrink-0"
           >
             <img
@@ -159,7 +160,7 @@ export default function Navbar() {
           <div className="flex items-center gap-3 flex-1 justify-end">
             <nav className="hidden xl:flex items-center gap-4 2xl:gap-6 mr-2">
               {navLinksRight.map((link) => (
-                <NavLink key={link.to} to={link.to} className={linkClass}>
+                <NavLink key={link.to} to={link.to} className={linkClass} onClick={() => window.scrollTo(0, 0)}>
                   {link.label}
                 </NavLink>
               ))}
@@ -353,7 +354,7 @@ export default function Navbar() {
               key={link.to}
               to={link.to}
               className={linkClass}
-              onClick={() => setMenuOpen(false)}
+              onClick={() => { setMenuOpen(false); window.scrollTo(0, 0); }}
             >
               {link.label}
             </NavLink>
