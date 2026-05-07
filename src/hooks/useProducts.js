@@ -83,10 +83,11 @@ export function useProducts() {
           return;
         }
 
-        // After normalising, always replace image with the locally stored one
+        // Image priority: use sheet image path if provided, else fall back to local image
         const normalised = rows.map((raw) => {
           const product = normaliseProduct(raw);
-          product.image = localImageMap[product.id] ?? product.image;
+          const sheetImage = product.image?.trim();
+          product.image = sheetImage || localImageMap[product.id] || "";
           return product;
         });
         const candles = normalised.filter((p) => p.category === "Candles");
