@@ -36,6 +36,12 @@ function normaliseProduct(raw) {
   };
 }
 
+// Images are always sourced from local data — build a lookup map by product id.
+// Sheet manages everything else (name, price, description, inStock, etc.)
+const localImageMap = Object.fromEntries(
+  localAllProducts.map((p) => [p.id, p.image])
+);
+
 // Always pre-populate with local data so every page renders instantly — no loading spinner.
 // The hook then silently fetches from the API in the background.
 // On success: state is swapped to sheet data seamlessly.
@@ -77,7 +83,12 @@ export function useProducts() {
           return;
         }
 
-        const normalised = rows.map(normaliseProduct);
+        // After normalising, always replace image with the locally stored one
+        const normalised = rows.map((raw) => {
+          const product = normaliseProduct(raw);
+          product.image = localImageMap[product.id] ?? product.image;
+          return product;
+        });
         const candles = normalised.filter((p) => p.category === "Candles");
         const macrame = normalised.filter((p) => p.category === "Macrame");
         const macrameWallHangings = macrame.filter((p) => p.subcategory === "Wall Hangings");
