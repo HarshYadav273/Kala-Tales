@@ -8,7 +8,7 @@ import {
   allProducts as localAllProducts,
 } from "../data/products";
 
-
+// PASTE APPS SCRIPT URL HERE
 const API_URL = "https://script.google.com/macros/s/AKfycbxFhNlbMae6oNAGIsXyHV7ikne5pPQYHzLhLwNKlqr-utLxJH27MDY_M6AFF5GfYKeNPw/exec";
 
 /**
@@ -36,27 +36,32 @@ function normaliseProduct(raw) {
   };
 }
 
+// Always pre-populate with local data so every page renders instantly — no loading spinner.
+// The hook then silently fetches from the API in the background.
+// On success: state is swapped to sheet data seamlessly.
+// On failure: local data remains, no disruption to the user.
+const localState = {
+  products: localAllProducts,
+  candles: localCandles,
+  macrame: localMacrame,
+  macrameWallHangings: localWallHangings,
+  macrameKeychains: localKeychains,
+  macrameCoasters: localCoasters,
+  allProducts: localAllProducts,
+  loading: false,
+  error: null,
+};
+
 export function useProducts() {
-  const [state, setState] = useState({
-    products: localAllProducts,
-    candles: localCandles,
-    macrame: localMacrame,
-    macrameWallHangings: localWallHangings,
-    macrameKeychains: localKeychains,
-    macrameCoasters: localCoasters,
-    allProducts: localAllProducts,
-    loading: false,
-    error: null,
-  });
+  const [state, setState] = useState(localState);
 
   useEffect(() => {
-    // If no API URL is configured, skip the fetch and use local data silently
+    // If no API URL is configured, use local data silently
     if (!API_URL) return;
 
     let cancelled = false;
-    setState((prev) => ({ ...prev, loading: true, error: null }));
 
-    fetch(API_URL)
+    fetch(API_URL, { redirect: "follow" })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -64,22 +69,20 @@ export function useProducts() {
       .then((data) => {
         if (cancelled) return;
 
-        // Apps Script should return an array of row objects.
-        // Accept both { products: [...] } and a bare array.
-        const rows = Array.isArray(data) ? data : data.products ?? [];
-        const normalised = rows.map(normaliseProduct);
+        // Accept both { products: [...] } and a bare array from Apps Script
+        const rows = Array.isArray(data) ? data : (data.products ?? []);
 
+        if (rows.length === 0) {
+          console.warn("useProducts: API returned empty data, keeping local data.");
+          return;
+        }
+
+        const normalised = rows.map(normaliseProduct);
         const candles = normalised.filter((p) => p.category === "Candles");
         const macrame = normalised.filter((p) => p.category === "Macrame");
-        const macrameWallHangings = macrame.filter(
-          (p) => p.subcategory === "Wall Hangings",
-        );
-        const macrameKeychains = macrame.filter(
-          (p) => p.subcategory === "Keychains",
-        );
-        const macrameCoasters = macrame.filter(
-          (p) => p.subcategory === "Coasters",
-        );
+        const macrameWallHangings = macrame.filter((p) => p.subcategory === "Wall Hangings");
+        const macrameKeychains = macrame.filter((p) => p.subcategory === "Keychains");
+        const macrameCoasters = macrame.filter((p) => p.subcategory === "Coasters");
 
         setState({
           products: normalised,
@@ -95,22 +98,8 @@ export function useProducts() {
       })
       .catch((err) => {
         if (cancelled) return;
-        console.warn(
-          "useProducts: fetch failed, falling back to local data.",
-          err.message,
-        );
-        // Fallback — keep local data, surface error for optional display
-        setState({
-          products: localAllProducts,
-          candles: localCandles,
-          macrame: localMacrame,
-          macrameWallHangings: localWallHangings,
-          macrameKeychains: localKeychains,
-          macrameCoasters: localCoasters,
-          allProducts: localAllProducts,
-          loading: false,
-          error: err.message,
-        });
+        // Local data is already showing — no disruption to the user
+        console.warn("useProducts: fetch failed, keeping local data.", err.message);
       });
 
     return () => {
