@@ -8,8 +8,8 @@ import {
   allProducts as localAllProducts,
 } from "../data/products";
 
-// PASTE APPS SCRIPT URL HERE
-const API_URL = "";
+
+const API_URL = "https://script.google.com/macros/s/AKfycbxFhNlbMae6oNAGIsXyHV7ikne5pPQYHzLhLwNKlqr-utLxJH27MDY_M6AFF5GfYKeNPw/exec";
 
 /**
  * Normalises a raw row object from Google Sheets into a product shape
