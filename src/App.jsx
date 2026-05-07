@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import ScrollToTop from "./components/ScrollToTop.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 import CartPanel from "./components/CartPanel.jsx";
@@ -14,6 +15,7 @@ import Cart from "./pages/Cart.jsx";
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Navbar />
       {/* CartPanel renders on top of every page */}
       <CartPanel />
