@@ -300,19 +300,7 @@ export const macrameCoasters = [
     description:
       "A boho macrame table coaster collection. Perfect for everyday use or as a thoughtful housewarming gift.",
   },
-  {
-    id: 22,
-    name: "Boho Table Coaster ",
-    sku: "CO-03",
-    price: 549,
-    category: "Macrame",
-    subcategory: "Coasters",
-    filterCategory: "Boho",
-    image: LL1,
-    inStock: true,
-    description:
-      "A boho macrame table coaster collection. Perfect for everyday use or as a thoughtful housewarming gift.",
-  },
+ 
 ];
 
 // Combined macrame export (all subcategories)
