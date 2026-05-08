@@ -19,6 +19,7 @@ import KC04 from "../Assests/Images/KC-04.jpg";
 import CO01 from "../Assests/Images/CO-01.jpg";
 import CO02 from "../Assests/Images/CO-02.jpg";
 import CO03 from "../Assests/Images/CO-03.jpg";
+import LL1 from "../Assests/Images/LL1.webp";
 
 // ─── CANDLES ────────────────────────────────────────────────────────────────
 export const candles = [
@@ -295,6 +296,19 @@ export const macrameCoasters = [
     subcategory: "Coasters",
     filterCategory: "Boho",
     image: CO03,
+    inStock: true,
+    description:
+      "A boho macrame table coaster collection. Perfect for everyday use or as a thoughtful housewarming gift.",
+  },
+  {
+    id: 22,
+    name: "Boho Table Coaster ",
+    sku: "CO-03",
+    price: 549,
+    category: "Macrame",
+    subcategory: "Coasters",
+    filterCategory: "Boho",
+    image: LL1,
     inStock: true,
     description:
       "A boho macrame table coaster collection. Perfect for everyday use or as a thoughtful housewarming gift.",
